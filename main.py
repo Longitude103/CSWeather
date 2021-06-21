@@ -14,6 +14,7 @@ station_info = {'agate': [42.42, -103.73, 4669, 'c250030', 'AGAT'], 'akron': [40
                 'scottsbluff': [41.87, -103.6, 3944, 'c257665', 'SCTB'], 'sidney': [41.2, -103.02, 4321, 'c257830', 'SDN2']}
 
 
+# Main function that loads and formats raw .csv file
 def cs_weather():
     file_path = "C:/Users/Jason/Desktop/weather_data_master/"
     raw_list = os.listdir(file_path)
@@ -48,6 +49,7 @@ def cs_weather():
             save_file(annual_data_list, yr_counter, fl[:-4], file_path)
 
 
+# Function that takes four parameters and outputs the text_line for each year per station
 def save_file(data_list, yr, station, file_path):
     if calendar.isleap(yr):
         dc = 366
