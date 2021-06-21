@@ -26,7 +26,7 @@ file locations:
 
 ### Station Data
 Station data is stored in the main.py file, under `station_data` as a dictionary. 
-This inclues the weather station name as a key, with the following data as values:
+This includes the weather station name as a key, with the following data as values:
 
 * Position 0 : Latitude
 * Position 1 : Longitude
