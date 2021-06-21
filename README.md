@@ -13,6 +13,11 @@ http://awdn.unl.edu/classic/stnsel.cgi
 * Username: thad
 * Password: scottsBluff19
 
+### Packages Needed
+`import datetime`
+`import os`
+`from WeatherStationData import WsData`
+
 ### File Location
 The following section of code is specific to the user running the program and should be updated to reflect the correct 
 file locations:
