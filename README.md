@@ -1,4 +1,4 @@
-# Crop Sim Weather
+# Cropsim Weather
 
 ## App Description
 This program is designed to take raw, exported weather station files as .csv's from http://awdn.unl.edu/classic/stnsel.cgi
