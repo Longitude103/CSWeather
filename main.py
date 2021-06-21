@@ -24,7 +24,7 @@ def cs_weather():
             file_list.append(item)
 
     for fl in file_list:
-        yr_counter = 1953
+        yr_counter = 1953  # Starting year. Only works if all data is present back to 1953
 
         with open(os.path.join(file_path, fl), 'r') as f:
             f.readline()
