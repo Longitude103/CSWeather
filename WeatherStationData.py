@@ -57,7 +57,7 @@ class WsData:
     def text_line(self, lat):
         try:
             rslt = f'{self.dt.timetuple().tm_yday}, {self.h_temp}, {self.l_temp}, {self.precip}, -99.00, {round(self.hargraves(lat), 2)}\n'
-        except TypeError:
+        except TypeError:  # prints error to help with qc
             print(f'Error in {self.station} on {self.dt}')
             exit()
 
