@@ -22,20 +22,20 @@ class WsData:
 
         return datetime.date(y, m, d)
 
-    # Mean temp is required for the hargraves equation. (High temp + Low temp) / 2
+    # Mean temp is required for the hargreaves equation. (High temp + Low temp) / 2
     # The "convert_celsius" method is applied here as well.
     def mean_temp(self):
         return (self.convert_celsius(self.h_temp) + self.convert_celsius(self.l_temp)) / 2
 
     # Main equation. Takes the station latitude as a required parameter.
-    def hargraves(self, lat):
+    def hargreaves(self, lat):
         k1 = 0.0023  # First constant
         k2 = 17.8  # Second constant
         eto = (k1 * (self.convert_celsius(self.h_temp) - self.convert_celsius(self.l_temp)) ** .5 * (
                     (self.mean_temp()) + k2) * self.__ra__(lat)) / 2.45  # Exoatmospheric radiation constant.
         return eto * .03937  # mm to inches conversion
 
-    # Exoatmospheric radiation equation, sub equation needed for hargraves.
+    # Exoatmospheric radiation equation, sub equation needed for hargreaves.
     def __ra__(self, lat):
         k3 = 24 / math.pi # equation constant
         gsc = 4.92  # solar constant
@@ -56,7 +56,7 @@ class WsData:
     # main method to print out correct data
     def text_line(self, lat):
         try:
-            rslt = f'{self.dt.timetuple().tm_yday}, {self.h_temp}, {self.l_temp}, {self.precip}, -99.00, {round(self.hargraves(lat), 2)}\n'
+            rslt = f'{self.dt.timetuple().tm_yday}, {self.h_temp}, {self.l_temp}, {self.precip}, -99.00, {round(self.hargreaves(lat), 2)}\n'
         except TypeError:
             print(f'Error in {self.station} on {self.dt}')
             exit()
