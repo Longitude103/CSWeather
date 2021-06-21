@@ -2,7 +2,7 @@ import datetime
 import math
 
 
-# Class blueprint 'WsData' is created
+# Class blueprint 'WsData' is created 
 class WsData:
 
     # Initialization is defined, with parameters for other methods
