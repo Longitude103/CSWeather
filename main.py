@@ -62,13 +62,13 @@ def save_file(data_list, yr, station, file_path):
 
     header = f'{station.upper()}                   {state}  {station_info[station][3]}   {yr}\n' \
              f'  1  1   {dc}   LAT=  {station_info[station][0]}   LONG=  {station_info[station][1]}   ELEV(ft)=   {station_info[station][2]}.\n' \
-             f'DOY,    TMAX,    TMIN,  PRECIP,    EVAP,   ETRGH\n'
+             f'DOY,    TMAX,    TMIN,  PRECIP,    EVAP,   ETRHG\n'
 
     with open(os.path.join(file_path, "results", f'{station_info[station][4]}{yr}.WEA'), 'w') as f:
         f.write(header)
 
         for d in data_list:
-            f.write(d.text_line(station_info[station][0]))
+            f.write(d.text_line(station_info[station][0], station_info[station][1]))
 
 
 if __name__ == '__main__':

@@ -2,7 +2,10 @@ import datetime
 import math
 
 
-# Class blueprint 'WsData' is created 
+# Class blueprint 'WsData' is created
+from AdjFactors import AdjFactors
+
+
 class WsData:
 
     # Initialization is defined, with parameters for other methods
@@ -33,7 +36,8 @@ class WsData:
         k2 = 17.8  # Second constant
         eto = (k1 * (self.convert_celsius(self.h_temp) - self.convert_celsius(self.l_temp)) ** .5 * (
                     (self.mean_temp()) + k2) * self.__ra__(lat)) / 2.45  # Exoatmospheric radiation constant.
-        return eto * .03937  # mm to inches conversion
+        # return eto * .03937  # mm to inches conversion
+        return eto
 
     # Exoatmospheric radiation equation, sub equation needed for hargreaves.
     def __ra__(self, lat):
@@ -48,15 +52,30 @@ class WsData:
                     ws_sha_rads * math.sin(fi) * math.sin(sol_dec) + math.cos(fi) * math.cos(sol_dec) * math.sin(
                 ws_sha_rads))
 
+    # Calibration of Hargraves formula using constants and formula to get it closer to ASCE Standardized in TFG method.
+    def calibrate_hg(self, lat, long):
+        factors = AdjFactors()
+        month = self.dt.month - 1
+
+        et_e = pow(self.hargreaves(lat), factors.e[month])
+        lon = factors.c[month] * pow(abs(long), factors.d[month])
+        b_term = factors.b[month] + lon
+
+        return factors.a[month] + b_term * et_e
+
+    # ETr will return the calibrated Hargaves formula converted to inches per day.
+    def ETr(self, lat, long):
+        return self.calibrate_hg(lat, long) * 0.3937  # mm to inches conversion
+
     # Equation to convert station output of fahrenheit to celsius
     def convert_celsius(self, fahrenheit):
         celsius = (fahrenheit - 32) * (5 / 9)
         return celsius
 
     # main method to print out correct data
-    def text_line(self, lat):
+    def text_line(self, lat, long):
         try:
-            rslt = f'{self.dt.timetuple().tm_yday}, {self.h_temp}, {self.l_temp}, {self.precip}, -99.00, {round(self.hargreaves(lat), 2)}\n'
+            rslt = f'{self.dt.timetuple().tm_yday}, {self.h_temp}, {self.l_temp}, {self.precip}, -99.00, {round(self.ETr(lat, long), 2)}\n'
         except TypeError:
             print(f'Error in {self.station} on {self.dt}')
             exit()
