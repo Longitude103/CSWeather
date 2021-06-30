@@ -10,10 +10,13 @@ class WsData:
 
     # Initialization is defined, with parameters for other methods
     def __init__(self, day, month, year, h_temp, l_temp, precip, station):
-        self.h_temp = float(h_temp)
-        self.l_temp = float(l_temp)
-        self.precip = float(precip)
         self.dt = self.__create_date__(day, month, year)
+        high, low = self.check_temps(h_temp, l_temp, self.dt)
+
+        self.h_temp = high
+        self.l_temp = low
+        self.precip = float(precip)
+
         self.station = station
 
     # Create data method defines and type casts the day, month, and year as attributes
@@ -24,6 +27,21 @@ class WsData:
         y = int(year)
 
         return datetime.date(y, m, d)
+
+    def check_temps(self, h_temp, l_temp, dt):
+        try:
+            high = float(h_temp)
+            low = float(l_temp)
+        except ValueError:
+            print(f"Station Data not a number for temperatures at date {dt}")
+
+        try:
+            if high <= low:
+                raise ValueError
+        except ValueError:
+            print(f"Station Data incorrect for date: {dt}")
+
+        return high, low
 
     # Mean temp is required for the hargreaves equation. (High temp + Low temp) / 2
     # The "convert_celsius" method is applied here as well.
@@ -36,8 +54,11 @@ class WsData:
         k2 = 17.8  # Second constant
         eto = (k1 * (self.convert_celsius(self.h_temp) - self.convert_celsius(self.l_temp)) ** .5 * (
                     (self.mean_temp()) + k2) * self.__ra__(lat)) / 2.45  # Exoatmospheric radiation constant.
-        # return eto * .03937  # mm to inches conversion
-        return eto
+
+        if eto >= 0:
+            return eto
+        else:
+            return 0
 
     # Exoatmospheric radiation equation, sub equation needed for hargreaves.
     def __ra__(self, lat):
@@ -61,7 +82,12 @@ class WsData:
         lon = factors.c[month] * pow(abs(long), factors.d[month])
         b_term = factors.b[month] + lon
 
-        return factors.a[month] + b_term * et_e
+        ET_cal = factors.a[month] + b_term * et_e
+
+        if ET_cal >= 0:
+            return ET_cal
+        else:
+            return 0
 
     # ETr will return the calibrated Hargaves formula converted to inches per day.
     def ETr(self, lat, long):
