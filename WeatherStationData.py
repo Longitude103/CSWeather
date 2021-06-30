@@ -28,6 +28,7 @@ class WsData:
 
         return datetime.date(y, m, d)
 
+    # checks the temps for the high and low, errors if it cannot convert the temp or high < low
     def check_temps(self, h_temp, l_temp, dt):
         try:
             high = float(h_temp)

@@ -39,7 +39,7 @@ def cs_weather():
                     line_parts.append(p.strip())
 
                 if int(line_parts[2]) != yr_counter:
-                    save_file(annual_data_list,yr_counter,fl[:-4], file_path)
+                    save_file(annual_data_list, yr_counter, fl[:-4], file_path)
                     yr_counter += 1
                     annual_data_list = []
 
