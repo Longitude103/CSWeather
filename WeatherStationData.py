@@ -11,7 +11,7 @@ class WsData:
     # Initialization is defined, with parameters for other methods
     def __init__(self, day, month, year, h_temp, l_temp, precip, station):
         self.dt = self.__create_date__(day, month, year)
-        high, low = self.check_temps(h_temp, l_temp, self.dt)
+        high, low = self.check_temps(h_temp, l_temp, self.dt, station)
 
         self.h_temp = high
         self.l_temp = low
@@ -29,7 +29,7 @@ class WsData:
         return datetime.date(y, m, d)
 
     # checks the temps for the high and low, errors if it cannot convert the temp or high < low
-    def check_temps(self, h_temp, l_temp, dt):
+    def check_temps(self, h_temp, l_temp, dt, station):
         try:
             high = float(h_temp)
             low = float(l_temp)
@@ -40,7 +40,7 @@ class WsData:
             if high <= low:
                 raise ValueError
         except ValueError:
-            print(f"Station Data incorrect for date: {dt}")
+            print(f"Station Data incorrect for date: {dt}, station: {station}")
 
         return high, low
 
