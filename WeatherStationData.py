@@ -92,7 +92,7 @@ class WsData:
 
     # ETr will return the calibrated Hargaves formula converted to inches per day.
     def ETr(self, lat, long):
-        return self.calibrate_hg(lat, long) * 0.3937  # mm to inches conversion
+        return self.calibrate_hg(lat, long) * 0.03937  # mm to inches conversion
 
     # Equation to convert station output of fahrenheit to celsius
     def convert_celsius(self, fahrenheit):
